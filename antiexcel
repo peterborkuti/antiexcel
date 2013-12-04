@@ -1,0 +1,36 @@
+#!/bin/bash
+pth=~/bin
+if [ "$1" == "" ]; then
+    cat <<DONE
+    Excel file viewer for text console
+    USAGE: 
+	    $0 FileName
+    AUTHOR:
+	    Peter Borkuti, 2003. 01
+DONE
+exit 0
+fi;
+
+
+# The place of the csv file
+TMPFILE=`mktemp`
+if [ $? -ne 0 ];then
+    echo "I cant create temporary file"
+    exit 0
+fi;
+# Make a ';' delimited csv file from the input 
+$pth/antiexcel-parse.pl $1 > $TMPFILE
+$pth/csvviewer $TMPFILE |\
+# BEGIN filters  <-- Put your own postfilters here
+
+
+# Windows's Long Hyphens into minus signs 
+tr '\226' '-' |\
+
+
+# END filters
+
+# -S -  Dont break long lines
+less -S
+
+rm -f $TMPFILE

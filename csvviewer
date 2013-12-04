@@ -1,0 +1,42 @@
+#!/bin/bash
+if [ "$1" == "" ]; then
+    cat <<DONE
+	PROGRAM DESCRIPTION
+	semicolon separated (csv) file viewer
+	USAGE
+	    $0 FileName
+	AUTHOR	
+	Peter Borkuti, 2003.01.19
+DONE
+    exit 0
+fi;
+
+colnum=`tr -dc ';\n' < $1 | wc -L`		# Number of columns 
+CELLPAD=2					# Extra spaces between cols
+tabs[0]=0					# First tab pos for calculation
+
+i=1
+while [ $i -le $colnum ]; do
+ colwidth=`grep ';' $1 |\
+	   sed -e 's/[^;]*;\+$//' |\
+	   cut -d';' -f"$i" |\
+	   wc -L`
+ prevtab=${tabs[$(( $i - 1 ))]}
+ tabs[$i]=$(( $colwidth + $prevtab + $CELLPAD ))				
+	  
+ i=$(( $i + 1 ))
+ 
+done
+
+# Width of a column\
+# Previous tab position\
+# Extra spaces between columns
+
+tabs[0]=''					# We don't need the 0 tab pos
+tablist=`echo ${tabs[@]}| tr ' ' ','`		# Make a comma separated 
+						# tab position list
+
+# expand expands only tab characters, so we have to change csv delimiters
+# to tab chars
+
+tr ';' '\t' < $1| expand --tabs=$tablist
