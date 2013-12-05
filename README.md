@@ -46,6 +46,13 @@ Copyright notices
 
 Installation instructions for antiexcel
 
+### Dependencies
+
+libspreadsheet-parseexcel-perl
+
+in Debian : 
+`apt-get install libspreadsheet-parseexcel-perl` as root
+
 ### Administrators
 
 Please, dont install a system wide copy of this program. It is 
