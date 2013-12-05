@@ -79,7 +79,7 @@ sub OneCell {
     my $len=0;
     my $mycell;
     if ($cell->{Type} eq 'Numeric' ){
-        $mycell=$cell->{Val};
+        $mycell=$cell->value();
     } else {
         $mycell=$cell->Value;
     };
